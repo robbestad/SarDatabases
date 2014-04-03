@@ -18,8 +18,8 @@ return array(
          * Hosts
          */
         'host' => array(
-            'production' => 'mongodb://localhost',
-            'development' => 'mongodb://localhost',
+            'production' => 'mongodb://forecast:txm4VvFhmwdx@dbh44.mongolab.com:27447/uvindex',
+            'development' => 'mongodb://forecast:txm4VvFhmwdx@dbh44.mongolab.com:27447/uvindex'
         )
 
     ),
