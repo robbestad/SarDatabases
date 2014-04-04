@@ -25,9 +25,9 @@ class SarMysql
             case "local":
             default:
                 $this->host = $this->conn->host; //"localhost";
-                $this->user = $this->conn->user; //"admin_external";
-                $this->password = $this->conn->password; //"9FLZBQFSeCYfYwPs";
-                $this->db_name = $this->conn->db_name; //"slank3";
+                $this->user = $this->conn->user;
+                $this->password = $this->conn->password;
+                $this->db_name = $this->conn->db_name;  
                 break;
         }
 
