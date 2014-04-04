@@ -9,18 +9,16 @@ class SarMysql
     public $user = '';
     public $password = '';
     public $database = '';
-    private $link;
     private $result;
     private $message = '';
 
     function __construct($connection = "default")
     {
         $this->conn = $this->getConfig()["sardatabases"]["mysql"][$connection];
-        $this->host = $this->conn["host"]; //"localhost";
+        $this->host = $this->conn["host"];
         $this->user = $this->conn["user"];
         $this->password = $this->conn["password"];
         $this->database = $this->conn["database"];
-
     }
 
 
@@ -32,9 +30,8 @@ class SarMysql
 
     private function Open()
     {
-        $this->link = mysqli_connect($this->host, $this->user, $this->password);
-        mysqli_select_db($this->link, $this->database);
-
+        $this->conn = mysqli_connect($this->host, $this->user, $this->password);
+        mysqli_select_db($this->conn, $this->database);
     }
 
     public function getMessage()
@@ -49,7 +46,7 @@ class SarMysql
         if ($resultDB)
             mysqli_free_result($this->result);
 
-        mysqli_close($this->link);
+        mysqli_close($this->conn);
     }
 
     function closeResult($resultDB)
@@ -61,7 +58,7 @@ class SarMysql
 
     function closeLink()
     {
-        mysqli_close($this->link);
+        mysqli_close($this->conn);
     }
 
     function __toString()
@@ -71,7 +68,7 @@ class SarMysql
 
     public function getInsertID()
     {
-        return mysql_insert_id($this->link);
+        return mysql_insert_id($this->conn);
     }
 
 
@@ -152,7 +149,7 @@ class SarMysql
     function get($table, $getFieldsArray, $queryEnd = "", $inputArray = "", $mode = 0, $close = 0, $cache = 1)
     {
         $this->Open();
-        if (!$this->link) {
+        if (!$this->conn) {
             $this->message = 'Ingen forbindelse til databasen. Pr�v igjen senere.';
             return false;
         } else {
@@ -180,7 +177,7 @@ class SarMysql
             // HVIS IKKE MODUS 1, LEGGES SORTERING OG LIMIT TIL QUERY
             $i = 1;
             // PREPARERER QUERY FOR KJ�RING
-            if ($stmt = mysqli_prepare($this->link, $query)) {
+            if ($stmt = mysqli_prepare($this->conn, $query)) {
                 /*     OPPRETTER ET ARRAY, BINDROW, MED ARGUMENTENE TIL BIND PARAM (1. ER STATEMENT, 2. ER STRINGEN
                 MED TYPENE OG RESTEN ER ALLE VARIABLENE TIL QUERYET) OG RESULTBINDROW HVOR STATEMENTEN BINDES*/
                 $bindRow[0] = $resultBindRow[0] = $stmt;
@@ -235,7 +232,7 @@ class SarMysql
                     if ($mode == 1) {
                         if ($close) {
                             $this->close();
-                            //    $this->close($this->link);
+                            //    $this->close($this->conn);
                         }
                         return $getFieldsArray[0];
                     }
@@ -260,7 +257,7 @@ class SarMysql
 
             } else {
                 echo "Query feilet:<br>Connection: \"$TypeOfConnection\"<br>";
-                echo mysqli_error($this->link) . "<br>Query:<br>";
+                echo mysqli_error($this->conn) . "<br>Query:<br>";
                 echo $query . "<br>";
             }
             //$this->close();
@@ -272,13 +269,13 @@ class SarMysql
     function insert($query, $inputArray, $id = "", $close = 0)
     {
         $this->Open();
-        if (!$this->link) {
+        if (!$this->conn) {
             $this->message = 'Ingen forbindelse til databasen. Pr�v igjen senere.';
             return false;
         } else {
             $inputArray = getInputArrayType($inputArray);
             // GJ�RE KLAR FOR INSERT
-            if ($stmt = mysqli_prepare($this->link, $query)) {
+            if ($stmt = mysqli_prepare($this->conn, $query)) {
 
                 /*     OPPRETTER ET ARRAY, BINDROW, MED ARGUMENTENE TIL BIND PARAM (1. ER STATEMENT, 2. ER STRINGEN
                     MED TYPENE OG RESTEN ER ALLE VARIABLENE TIL QUERYET)*/
@@ -309,12 +306,12 @@ class SarMysql
                 }
             } else {
                 echo "Query feilet: <br>Connection: \"$connection\"<br>";
-                echo mysqli_error($this->link) . "<br>Query:<br>";
+                echo mysqli_error($this->conn) . "<br>Query:<br>";
                 echo $query . "<br>";
             }
 
             if ($close)
-                echo mysqli_error($this->link);
+                echo mysqli_error($this->conn);
             return false;
         }
     }

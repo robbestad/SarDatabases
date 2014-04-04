@@ -1,8 +1,11 @@
-#Plain Database module for ZF2
+# Database modules for ZF2
 
 A ZF2 module to make connecting to databases a breeze
 
-Currently only includes support for MongoDB, but more will be added eventually
+Currently  includes support for MongoDB and MySQL. More will be added eventually
+
+## Note about MAMP and MySQL
+For local testing, use 127.0.0.1 instead of localhost, and uncheck "Allow local access only" in the MAMP PRO settings.
 
 ###More info
 

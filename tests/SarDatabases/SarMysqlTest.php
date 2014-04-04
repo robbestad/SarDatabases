@@ -33,24 +33,24 @@ class SarMysqlTest extends \PHPUnit_Framework_TestCase
      * Modifies it
      * Deletes it
      */
-    /*
     public function testCanManipulateRows()
     {
-        $mongoconn = new SarMysql("prod", "_test");
-        $mongoId =$mongoconn->insertOne();
+        $conn = new SarMysql("default");
+        $id =$conn->insert("INSERT INTO dummytable (title) VALUES (?) ",array("TEST"));
 
         //  var_dump((string)$result); //MongoID object to string
         // Assert that the entry is inserted
-        $this->assertNotEmpty((string)$mongoId);
-
+        $this->assertNotEmpty((string)$id);
+/*
         //Assert that we can modify the entry
-        $this->assertEquals("6", $mongoconn->updateOne($mongoId, array("x"=>6))['x']);
+        $this->assertEquals("6", $conn->updateOne($id, array("x"=>6))['x']);
 
         // Assert that we can delete this entry
-        $drop =$mongoconn->deleteOne($mongoId);
+        $drop =$conn->deleteOne($mongoId);
         $this->assertNotEmpty($drop);
+        */
     }
-
+/*
     public function testCanInsertSingleElement()
     {
         $mongoconn = new SarMysql("prod", "_test");

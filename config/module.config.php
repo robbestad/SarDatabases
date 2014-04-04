@@ -29,10 +29,10 @@ return array(
          */
         'mysql' => array(
             'default' => array(
-                'host' => 'localhost',
+                'host' => '127.0.0.1',
                 'user' => 'sqlmaster',
                 'password' => 'tLBewxfCzr37qXJS',
-                'database' => 'slank3'
+                'database' => '_test'
             )
         ),
 
