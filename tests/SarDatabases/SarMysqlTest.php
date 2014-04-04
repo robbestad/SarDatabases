@@ -23,8 +23,8 @@ class SarMysqlTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanConnectToDatabase()
     {
-            $mysqlconn = new SarMongo("prod", "_test");
-            $this->assertNotNull($mongoconn);
+            $conn = new SarMysql("default");
+            $this->assertNotNull($conn);
     }
 
     /**
@@ -33,9 +33,10 @@ class SarMysqlTest extends \PHPUnit_Framework_TestCase
      * Modifies it
      * Deletes it
      */
+    /*
     public function testCanManipulateRows()
     {
-        $mongoconn = new SarMongo("prod", "_test");
+        $mongoconn = new SarMysql("prod", "_test");
         $mongoId =$mongoconn->insertOne();
 
         //  var_dump((string)$result); //MongoID object to string
@@ -52,7 +53,7 @@ class SarMysqlTest extends \PHPUnit_Framework_TestCase
 
     public function testCanInsertSingleElement()
     {
-        $mongoconn = new SarMongo("prod", "_test");
+        $mongoconn = new SarMysql("prod", "_test");
         $mongoId =$mongoconn->insertOne(array("sar"=>"var her"));
         $this->assertNotEmpty((string)$mongoId);
     }
@@ -60,7 +61,7 @@ class SarMysqlTest extends \PHPUnit_Framework_TestCase
 
     public function testCanQueryTheDatabase()
     {
-        $mongoconn = new SarMongo("prod", "_test");
+        $mongoconn = new SarMysql("prod", "_test");
         $cursor =$mongoconn->find(array("sar"=>"var her"));
         $array = iterator_to_array($cursor);
         foreach($array as $val)
@@ -69,10 +70,10 @@ class SarMysqlTest extends \PHPUnit_Framework_TestCase
 
     public function testCanRemoveElementsWithQuery()
     {
-        $mongoconn = new SarMongo("prod", "_test");
+        $mongoconn = new SarMysql("prod", "_test");
         $mongoId =$mongoconn->delete(array("sar"=>"var her"));
         $this->assertNotEmpty($mongoId);
     }
-
+*/
 
 }

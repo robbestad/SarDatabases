@@ -2,43 +2,38 @@
 
 namespace SarDatabases;
 
-class SarMysql 
+class SarMysql
 {
+    private $conn = '';
     public $host = '';
     public $user = '';
     public $password = '';
-    public $db_name = '';
+    public $database = '';
     private $link;
     private $result;
     private $message = '';
 
-    function __construct($TypeOfConnection = "local")
+    function __construct($connection = "default")
     {
-        $host = $this->getConfig()["sardatabases"]["host"][$this->getConfig()["sardatabases"]["environment"]];
+        $this->conn = $this->getConfig()["sardatabases"]["mysql"][$connection];
+        $this->host = $this->conn["host"]; //"localhost";
+        $this->user = $this->conn["user"];
+        $this->password = $this->conn["password"];
+        $this->database = $this->conn["database"];
 
-        if (empty($env) || empty($systemName)) {
-            return false;
-        }
-        // $this->conn->$systemName
-
-        switch ($TypeOfConnection) {
-            case "local":
-            default:
-                $this->host = $this->conn->host; //"localhost";
-                $this->user = $this->conn->user;
-                $this->password = $this->conn->password;
-                $this->db_name = $this->conn->db_name;
-                break;
-        }
+    }
 
 
+    public function getConfig()
+    {
+        return include (dirname(__DIR__)) . '/../config/module.config.php';
     }
 
 
     private function Open()
     {
         $this->link = mysqli_connect($this->host, $this->user, $this->password);
-        mysqli_select_db($this->link, $this->db_name);
+        mysqli_select_db($this->link, $this->database);
 
     }
 
@@ -313,7 +308,7 @@ class SarMysql
                         return mysqli_stmt_insert_id($stmt);
                 }
             } else {
-                echo "Query feilet: <br>Connection: \"$TypeOfConnection\"<br>";
+                echo "Query feilet: <br>Connection: \"$connection\"<br>";
                 echo mysqli_error($this->link) . "<br>Query:<br>";
                 echo $query . "<br>";
             }
