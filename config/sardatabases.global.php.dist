@@ -7,10 +7,35 @@
  */
 return array(
     'sardatabases' => array(
+
         /**
-         * User table name
+         * Environment
          */
-        'host' => 'mongodb://localhost',
+
+        'environment' => 'development',
+
+        /**
+         * Hosts
+         */
+        'mongo' => array(
+            'default' => array(
+                'production' => 'mongodb://',
+                'development' => 'mongodb://'
+            )
+        ),
+
+        /**
+         * Mysql Hosts
+         */
+        'mysql' => array(
+            'default' => array(
+                'host' => '127.0.0.1',
+                'user' => '',
+                'password' => '',
+                'database' => ''
+            )
+        ),
+
 
     ),
     /**
