@@ -1,4 +1,5 @@
 .idea
+config/module.config.php
 .vhash
 .version
 .vhash
