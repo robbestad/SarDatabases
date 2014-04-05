@@ -145,17 +145,15 @@ class SarMysql
     }
 
 
-    // HOVED-GET-FUNKSJON
-    function get($table, $getFieldsArray, $queryEnd = "", $inputArray = "", $mode = 0, $close = 0, $cache = 1)
+    function select($table, $getFieldsArray= array(), $queryEnd = "", $inputArray = array(), $mode = 0, $close = 0, $cache = 1)
     {
         $this->Open();
         if (!$this->conn) {
-            $this->message = 'Ingen forbindelse til databasen. Pr�v igjen senere.';
+            $this->message = 'No connection to the database';
             return false;
         } else {
-            $inputArray = getInputArrayType($inputArray);
+            $inputArray = $this->_getInputArrayType($inputArray);
             $retArray = array();
-            // BYGGER QUERYET (ENTEN MED ALLE FELTENE SOM S�KES ETTER ELLER EN COUNT AV ANTALL TREFF)
             $query = "SELECT " . ($cache == 1 ? " SQL_CACHE " : " SQL_NO_CACHE ");
             $i = 0;
             foreach ($getFieldsArray as $entry) {
@@ -188,7 +186,7 @@ class SarMysql
                         $bindRow[] = & $entry[0];
                     }
                 }
-                //echo $query;
+
                 // LEGGER TIL RESULTATENE SOM SKAL HENTES I RESULTBINDROW
                 for ($i = 0; $i < count($getFieldsArray); $i++) {
                     $resultBindRow[] = & $getFieldsArray[$i];
@@ -197,20 +195,10 @@ class SarMysql
                 $params = array(); // Create the empty 0 index
                 $i = 1;
                 foreach ($getFieldsArray as $prop => $val) {
-                    $params[0] .= $this->_determineType($val);
+                    $params[0] = $this->_determineType($val);
                     array_push($params, $val);
-                    //array_push($params, $bindParams[$prop]);
                 }
-                /*
-                foreach($getFieldsArray as &$v)
-                    $arg[] = &$v;
-                $return = call_user_func_array(array($stmt, 'bind_param'), $arg);
-                */
-                /*
-                print_r($params);print("<hr>");
-                print_r($resultBindRow);print("<hr>");
-                */
-                //call_user_func_array(array($stmt, "bind_param"),$this->refValues($params));
+
 
                 // BINDER PARAMETERE
                 call_user_func_array("mysqli_stmt_bind_param", $this->refValues($bindRow));
@@ -265,7 +253,6 @@ class SarMysql
         }
     }
 
-    // HOVED-INSERT-FUNKSJON
     function insert($query, $inputArray, $id = "", $close = 0)
     {
         $this->Open();
@@ -273,7 +260,7 @@ class SarMysql
             $this->message = 'Ingen forbindelse til databasen. Pr�v igjen senere.';
             return false;
         } else {
-            $inputArray = getInputArrayType($inputArray);
+            $inputArray = $this->_getInputArrayType($inputArray);
             // GJ�RE KLAR FOR INSERT
             if ($stmt = mysqli_prepare($this->conn, $query)) {
 
@@ -315,25 +302,27 @@ class SarMysql
             return false;
         }
     }
-}
 
-## TMP. DENNE SKAL LEGGES OVER TIL SYSTEM-MAPPE N�R DENNE LAGES ##
-function getInputArrayType($arr)
-{
-    if (is_array($arr)) {
-        foreach ($arr as $entry) {
-            if (!is_array($entry)) {
-                $type = "s";
-                if (is_numeric($entry)) {
-                    if (strstr($entry, ".") > 0)
-                        $type = "d";
-                    elseif (strlen($entry) < 10)
-                        $type = "i";
-                }
-                $retArray[] = array($entry, $type);
-            } else
-                $retArray[] = $entry;
+
+    private function _getInputArrayType($arr)
+    {
+        $retArray=array();
+        if (is_array($arr)) {
+            foreach ($arr as $entry) {
+                if (!is_array($entry)) {
+                    $type = "s";
+                    if (is_numeric($entry)) {
+                        if (strstr($entry, ".") > 0)
+                            $type = "d";
+                        elseif (strlen($entry) < 10)
+                            $type = "i";
+                    }
+                    $retArray[] = array($entry, $type);
+                } else
+                    $retArray[] = $entry;
+            }
         }
+        return $retArray;
     }
-    return $retArray;
+
 }

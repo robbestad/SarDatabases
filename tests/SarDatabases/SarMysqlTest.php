@@ -40,15 +40,18 @@ class SarMysqlTest extends \PHPUnit_Framework_TestCase
 
         //  var_dump((string)$result); //MongoID object to string
         // Assert that the entry is inserted
-        $this->assertNotEmpty((string)$id);
-/*
+        $this->assertNotEmpty((int)$id);
+
         //Assert that we can modify the entry
-        $this->assertEquals("6", $conn->updateOne($id, array("x"=>6))['x']);
+        $conn->insert("UPDATE dummytable SET title = ? WHERE id = ? ",array("Test Title",$id));
+        $select= $conn->select("dummytable",array("title"),"WHERE id = ?",array($id));
+
+       $this->assertEquals("Test Title",$select[0]["title"],"Failed asserting title for $id");
 
         // Assert that we can delete this entry
-        $drop =$conn->deleteOne($mongoId);
-        $this->assertNotEmpty($drop);
-        */
+        $drop =$conn->insert("DELETE FROM dummytable WHERE id = ?",array($id));
+//        $this->assertNotEmpty($drop);
+
     }
 /*
     public function testCanInsertSingleElement()
