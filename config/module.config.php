@@ -17,10 +17,25 @@ return array(
         /**
          * Hosts
          */
-        'host' => array(
-            'production' => 'mongodb://forecast:txm4VvFhmwdx@dbh44.mongolab.com:27447/uvindex',
-            'development' => 'mongodb://forecast:txm4VvFhmwdx@dbh44.mongolab.com:27447/uvindex'
-        )
+        'mongo' => array(
+            'default' => array(
+                'production' => 'mongodb://forecast:txm4VvFhmwdx@dbh44.mongolab.com:27447/uvindex',
+                'development' => 'mongodb://forecast:txm4VvFhmwdx@dbh44.mongolab.com:27447/uvindex'
+            )
+        ),
+
+        /**
+         * Mysql Hosts
+         */
+        'mysql' => array(
+            'default' => array(
+                'host' => '127.0.0.1',
+                'user' => 'sqlmaster',
+                'password' => 'tLBewxfCzr37qXJS',
+                'database' => '_test'
+            )
+        ),
+
 
     ),
     /**
